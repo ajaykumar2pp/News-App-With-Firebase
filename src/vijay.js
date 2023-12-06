@@ -14,32 +14,27 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaRegHeart } from "react-icons/fa";
 
-
 const auth = getAuth(app);
 
 const NewsList = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState([]);
   const [offlineArticles, setOfflineArticles] = useState([]);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const response = await axios.get(
-          // 'https://gnews.io/api/v4/top-headlines?category=general&apikey=2fa044e1d79c63b51d975d617887ee22'
-          'https://gnews.io/api/v4/top-headlines?category=general&apikey=2fa044e1d79c63b51d975d617887ee22'
+          'https://newsapi.org/v2/top-headlines?country=in&apiKey=c7e92b0bb0794cc0a1e434031945849f'
         );
-        console.log('News data:', response.data);
         setNews(response.data.articles);
 
-        // Cache the articles in localstorage
+        // Cache the articles in localStorage
         localStorage.setItem('cachedArticles', JSON.stringify(response.data.articles));
-
-
       } catch (error) {
         console.error(error.message);
-
-        //try to retrieve cached articles from localStorage
+        // If an error occurs while fetching, try to retrieve cached articles from localStorage
         const cachedArticles = localStorage.getItem('cachedArticles');
         if (cachedArticles) {
           setOfflineArticles(JSON.parse(cachedArticles));
@@ -51,6 +46,10 @@ const NewsList = () => {
 
     fetchNews();
   }, []);
+
+  const isArticleInFavorites = (article) => {
+    return favorites.some((fav) => fav.title === article.title);
+  };
 
   const handleFavorite = async (article) => {
     try {
@@ -67,9 +66,11 @@ const NewsList = () => {
       if (docToRemove) {
         await deleteDoc(docToRemove.ref);
         toast.error('Removed from Favorites');
+        setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav.title !== article.title));
       } else {
         await addDoc(favoritesCollection, article);
         toast.success('Added to Favorites');
+        setFavorites((prevFavorites) => [...prevFavorites, article]);
       }
     } catch (error) {
       console.error('Error handling favorites:', error);
@@ -78,8 +79,7 @@ const NewsList = () => {
   };
 
   return (
-
-    <Container >
+    <Container>
       <Row>
         <Col>
           <h2 className='text-primary mt-3 mb-3 text-center'>Latest Article</h2>
@@ -90,37 +90,44 @@ const NewsList = () => {
           <Link to="/favorite-article" className='text-primary mt-3 mb-3 float-end'>Favorite Article</Link>
         </Col>
       </Row>
-      {
-        loading ? (
-          <h5 className='text-center text-bg-secondary py-3'>Loading Latest News...</h5>
-
-        ) : (
-          <Row className='justify-content-between flex-wrap'>
-            {(news.length > 0 ? news : offlineArticles).map((article, index) => (
-              <Col key={index} xs={12} md={4} className='mb-3'>
-                <div className='border border-primary shadow p-3 rounded'>
-                  <Image src={article.image} alt="urlImage" className="img-fluid" rounded />
-                  <div>
-                    <button onClick={() => handleFavorite(article)} className='float-end mt-1 btn btn-sm-primary'><FaRegHeart /></button>
-                    <span>{article.author}</span>
-                    <span className='ms-3'>
-                      <li style={{ color: 'red' }}>{new Date(article.publishedAt).toLocaleString('en-US', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</li>
-                    </span>
-                    <h5>{article.title}</h5>
-                    <p >{article.description}</p>
-                    <Button as="a" href={article.url} variant="primary" target="_blank" rel="noopener noreferrer">
-                      Read more <BsArrowRight />
-                    </Button>
-                  </div>
+      {loading ? (
+        <h5 className='text-center text-bg-secondary py-3'>Loading News...</h5>
+      ) : (
+        <Row className='justify-content-between flex-wrap'>
+          {(news.length > 0 ? news : offlineArticles).map((article, index) => (
+            <Col key={index} xs={12} md={4} className='mb-3'>
+              <div className='border border-primary shadow p-3 rounded'>
+                <Image src={article.urlToImage} alt="urlImage" className="img-fluid" rounded />
+                <div>
+                  <button
+                    onClick={() => handleFavorite(article)}
+                    style={{
+                      float: 'right',
+                      marginTop: '1rem',
+                      backgroundColor: isArticleInFavorites(article) ? 'red' : 'white',
+                      color: isArticleInFavorites(article) ? 'white' : 'black',
+                    }}
+                    className='btn btn-sm-primary'
+                  >
+                    <FaRegHeart />
+                  </button>
+                  <span>{article.author}</span>
+                  <span className='ms-3'>
+                    <li style={{ color: 'red' }}>{new Date(article.publishedAt).toLocaleString('en-US', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</li>
+                  </span>
+                  <h5>{article.title}</h5>
+                  <p>{article.description}</p>
+                  <Button as="a" href={article.url} variant="primary" target="_blank" rel="noopener noreferrer">
+                    Read more <BsArrowRight />
+                  </Button>
                 </div>
-              </Col>
-            ))}
-          </Row>
-        )
-      }
-
+              </div>
+            </Col>
+          ))}
+        </Row>
+      )}
     </Container>
-  )
-}
+  );
+};
 
-export default NewsList
+export default NewsList;

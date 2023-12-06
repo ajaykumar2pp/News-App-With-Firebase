@@ -100,7 +100,7 @@ const Registration = () => {
                             to="/login"
                             className="py-2 ps-3 pe-4 fw-semibold text-center text-decoration-none"
                         >
-                            Login
+                            Already have an account? Login
                         </Link>
                     </div>
                 </div>

@@ -97,7 +97,7 @@ const Login = () => {
                             to="/register"
                             className="py-2 ps-3 pe-4 fw-semibold text-center text-decoration-none"
                         >
-                            Register
+                           Don't have an account? Register
                         </Link>
                     </div>
                 </div>
