@@ -9,7 +9,9 @@ import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import { app, firestore } from '../firebase';
 import { getAuth } from "firebase/auth";
-import { collection, addDoc,doc , getDoc,updateDoc} from "firebase/firestore"; 
+import { collection, addDoc,getDocs,deleteDoc} from "firebase/firestore"; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const auth = getAuth(app);
@@ -24,7 +26,6 @@ const NewsList = () => {
                 const response = await axios.get(
                     'https://newsapi.org/v2/top-headlines?country=in&apiKey=c7e92b0bb0794cc0a1e434031945849f'
                 );
-
                 setNews(response.data.articles);
             } catch (error) {
                 console.error(error.message);
@@ -36,57 +37,31 @@ const NewsList = () => {
         fetchNews();
     }, []);
 
-    // Handle Favorite Article
     const handleFavorite = async (article) => {
-        // Check if the user is logged in
-        const user = auth.currentUser;
-        if (!user) {
-          console.log('User not logged in');
+      try {
+        if (!auth.currentUser) {
+          console.log('User not authenticated. Unable to add/remove from favorites.');
           return;
-        }else{
-          console.log("User logged")
         }
     
-        // Add or remove the article from favorites
-        // const userRef = collection('users').doc(user.uid);
-        try{
-        // Get a reference to the user's document in the "users" collection
-        const userRef = doc(collection(firestore, 'users'), user.uid);
-
-        // Get the current favorites array from the document
-        const userDoc = await getDoc(userRef);
-        const favorites = userDoc.data()?.favorites || [];
-
-        if (favorites.some((fav) => fav.title === article.title)) {
-            // Remove from favorites
-            const updatedFavorites = favorites.filter((fav) => fav.title !== article.title);
-            await updateDoc(userRef, { favorites: updatedFavorites });
+        const favoritesCollection = collection(firestore, `users/${auth.currentUser.uid}/favorites`);
+        const querySnapshot = await getDocs(favoritesCollection);
+    
+        const docToRemove = querySnapshot.docs.find((doc) => doc.data().title === article.title);
+    
+        if (docToRemove) {
+          await deleteDoc(docToRemove.ref);
+          toast.error('Removed from Favorites');
         } else {
-            // Add to favorites
-            const updatedFavorites = [...favorites, { title: article.title }];
-            await updateDoc(userRef, { favorites: updatedFavorites });
+          await addDoc(favoritesCollection, article);
+          toast.success('Added to Favorites');
         }
-
-        console.log('Favorites updated successfully.');
-        }catch(error) {
-          console.error('Error updating favorites: ', error.message);
+      } catch (error) {
+        console.error('Error handling favorites:', error);
+        toast.error('Error handling Favorites');
       }
-        // const userRef = await addDoc(collection(firestore ,'users'),{
-        //        title: "ajay"
-        // });
-        // console.log(userRef)
-        // const favorites = (await userRef.get()).data()?.favorites || [];
+    };
     
-        // if (favorites.some((fav) => fav.title === article.title)) {
-        //   // Remove from favorites
-        //   const updatedFavorites = favorites.filter((fav) => fav.title !== article.title);
-        //   await userRef.update({ favorites: updatedFavorites });
-        // } else {
-        //   // Add to favorites
-        //   const updatedFavorites = [...favorites, article];
-        //   await userRef.update({ favorites: updatedFavorites });
-        // }
-      };
     return (
 
         <Container >

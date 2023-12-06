@@ -17,7 +17,6 @@ const Login = () => {
     const navigate= useNavigate();
     const { handleChange, handleSubmit, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
-
             email: '',
             password: '',
         },
@@ -31,9 +30,7 @@ const Login = () => {
                 localStorage.setItem("userEmail",values.email)
                 navigate('/news')
                 toast.success('User Login Successfully!');
-               
                 console.log('User logged in successfully:', userCredential.user);
-               
             } catch (error) {
                 toast.error(`Error registering user: ${error.message}`);
                 console.error('Error logging in:', error.message);
