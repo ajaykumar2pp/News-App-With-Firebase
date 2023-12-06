@@ -91,7 +91,7 @@ const Favorites = () => {
                 {favorites.map((article, index) => (
                   <Col key={index} xs={12} md={4} className='mb-3'>
                     <div className='border border-primary shadow p-3 rounded'>
-                      <Image src={article.urlToImage} alt="urlImage" className="img-fluid" rounded />
+                      <Image src={article.image} alt="urlImage" className="img-fluid" rounded />
                       <div>
                         <span>{article.author}</span>
                         <span className='ms-3'>

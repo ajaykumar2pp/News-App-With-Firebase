@@ -25,8 +25,10 @@ const NewsList = () => {
         const fetchNews = async () => {
             try {
                 const response = await axios.get(
-                    'https://newsapi.org/v2/top-headlines?country=in&apiKey=c7e92b0bb0794cc0a1e434031945849f'
+                    // 'https://gnews.io/api/v4/top-headlines?category=general&apikey=2fa044e1d79c63b51d975d617887ee22'
+                    'https://gnews.io/api/v4/top-headlines?category=general&apikey=2fa044e1d79c63b51d975d617887ee22'
                 );
+                console.log('News data:', response.data);
                 setNews(response.data.articles);
             } catch (error) {
                 console.error(error.message);
@@ -85,7 +87,7 @@ const NewsList = () => {
                 {news.map((article, index) => (
                   <Col key={index} xs={12} md={4} className='mb-3'>
                     <div className='border border-primary shadow p-3 rounded'>
-                      <Image src={article.urlToImage} alt="urlImage" className="img-fluid" rounded />
+                      <Image src={article.image} alt="urlImage" className="img-fluid" rounded />
                       <div>
                         <button onClick={() => handleFavorite(article)} className='float-end mt-1 btn btn-sm-primary'><FaRegHeart /></button>
                         <span>{article.author}</span>
