@@ -10,6 +10,7 @@ import PageNotFound from './pages/PageNotFound';
 import Login from './components/Login';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import NewsList from './components/NewsList';
 
 
 
@@ -19,6 +20,7 @@ root.render(
    <ToastContainer/>
     <Routes>
       <Route path="/" element={<App />} />
+      <Route path="/news" element={<NewsList />} />
       <Route path="/register" element={<Registration />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
