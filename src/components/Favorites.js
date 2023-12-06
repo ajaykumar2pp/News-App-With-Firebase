@@ -83,31 +83,36 @@ const Favorites = () => {
             <h5 className='text-center text-bg-secondary py-3'>Loading News...</h5>
 
           ) : (
-            <Row className='justify-content-between flex-wrap'>
-              {favorites.map((article, index) => (
-                <Col key={index} xs={12} md={4} className='mb-3'>
-                  <div className='border border-primary shadow p-3 rounded'>
-                    <Image src={article.urlToImage} alt="urlImage" className="img-fluid" rounded />
-                    <div>
-
-                      <span>{article.author}</span>
-                      <span className='ms-3'>
-                         <li style={{ color: 'red' }}>{new Date(article.publishedAt).toLocaleString('en-US', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</li>
-                      </span>
-                      <h5>{article.title}</h5>
-                      <div className='d-flex justify-content-between'>
-                        <Button as="a" href={article.url} variant="primary" target="_blank" rel="noopener noreferrer">
-                          Read more <BsArrowRight />
-                        </Button>
-                        <Button variant="danger"onClick={() => handleRemove(article)}  >
-                          Remove
-                        </Button>
+            <div>
+            {favorites.length === 0 ? (
+              <h5 className='text-center mt-3'>No favorite articles added. Plz Add new Article</h5>
+            ) : (
+              <Row className='justify-content-between flex-wrap'>
+                {favorites.map((article, index) => (
+                  <Col key={index} xs={12} md={4} className='mb-3'>
+                    <div className='border border-primary shadow p-3 rounded'>
+                      <Image src={article.urlToImage} alt="urlImage" className="img-fluid" rounded />
+                      <div>
+                        <span>{article.author}</span>
+                        <span className='ms-3'>
+                          <li style={{ color: 'red' }}>{new Date(article.publishedAt).toLocaleString('en-US', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</li>
+                        </span>
+                        <h5>{article.title}</h5>
+                        <div className='d-flex justify-content-between'>
+                          <Button as="a" href={article.url} variant="primary" target="_blank" rel="noopener noreferrer">
+                            Read more <BsArrowRight />
+                          </Button>
+                          <Button variant="danger" onClick={() => handleRemove(article)}>
+                            Remove
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Col>
-              ))}
-            </Row>
+                  </Col>
+                ))}
+              </Row>
+            )}
+          </div>
           )
         }
       </div>
