@@ -90,7 +90,7 @@ const NewsList = () => {
                         <button onClick={() => handleFavorite(article)} className='float-end mt-1 btn btn-sm-primary'><FaRegHeart /></button>
                         <span>{article.author}</span>
                         <span className='ms-3'>
-                          <li style={{ color: 'red' }}>{article.publishedAt}</li>
+                        <li style={{ color: 'red' }}>{new Date(article.publishedAt).toLocaleString('en-US', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</li>
                         </span>
                         <h5>{article.title}</h5>
                         <p >{article.description}</p>
