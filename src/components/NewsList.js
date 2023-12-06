@@ -78,7 +78,7 @@ const NewsList = () => {
             </Row>
             {
               loading ?(
-                <h5 className='text-center text-bg-secondary py-3'>Loading News...</h5>
+                <h5 className='text-center text-bg-secondary py-3'>Loading Latest News...</h5>
               
               ) : ( 
                 <Row className='justify-content-between flex-wrap'>

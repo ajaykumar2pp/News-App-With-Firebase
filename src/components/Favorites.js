@@ -80,7 +80,7 @@ const Favorites = () => {
 
         {
           loading ? (
-            <h5 className='text-center text-bg-secondary py-3'>Loading News...</h5>
+            <h5 className='text-center text-bg-secondary py-3'>Loading Favorites News...</h5>
 
           ) : (
             <div>
