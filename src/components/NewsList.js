@@ -12,6 +12,7 @@ import { getAuth } from "firebase/auth";
 import { collection, addDoc,getDocs,deleteDoc} from "firebase/firestore"; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaRegHeart } from "react-icons/fa";
 
 
 const auth = getAuth(app);
@@ -86,7 +87,7 @@ const NewsList = () => {
                     <div className='border border-primary shadow p-3 rounded'>
                       <Image src={article.urlToImage} alt="urlImage" className="img-fluid" rounded />
                       <div>
-                        <button onClick={() => handleFavorite(article)} className='float-end mt-1 btn btn-sm-primary'>❤️</button>
+                        <button onClick={() => handleFavorite(article)} className='float-end mt-1 btn btn-sm-primary'><FaRegHeart /></button>
                         <span>{article.author}</span>
                         <span className='ms-3'>
                           <li style={{ color: 'red' }}>{article.publishedAt}</li>

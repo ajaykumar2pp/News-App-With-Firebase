@@ -12,6 +12,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const auth = getAuth(app);
 
 const Favorites = () => {

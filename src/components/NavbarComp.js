@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from "react-router-dom";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { getAuth, signOut } from "firebase/auth";
+import { BsEnvelopeAtFill } from "react-icons/bs";
 
 
 const NavbarComp = () => {
@@ -56,13 +57,13 @@ const NavbarComp = () => {
             <NavDropdown title="Profile" id="basic-nav-dropdown">
               {user ? (
                 <div>
-                 <NavDropdown.Item >Email : {user.email}</NavDropdown.Item>
+                 <NavDropdown.Item ><BsEnvelopeAtFill /> : {user.email}</NavDropdown.Item>
                   <NavDropdown.Item >
-                <button className='btn btn-outline-danger'onClick={handleLogout}>Sign Out</button>
+                <button className='btn btn-sm btn-outline-danger'onClick={handleLogout}>Sign Out</button>
               </NavDropdown.Item>
                 </div>
               ) : (
-                <NavDropdown.Item >User is not signed in</NavDropdown.Item>
+                <NavDropdown.Item >Not Login</NavDropdown.Item>
               
               )}
             </NavDropdown>
