@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { validationSchema } from '../components/UserSchema'
 import Form from 'react-bootstrap/Form';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const auth = getAuth(app);
 
 const Registration = () => {
-
+    const navigate= useNavigate();
     const { handleChange, handleSubmit, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
 
@@ -25,13 +26,10 @@ const Registration = () => {
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-                // alert("User Register")
-                console.log('User register in successfully:', userCredential.user);
-                toast.success('User registered successfully!');
-                
-                // setTimeout(() => {
-                //     toast.success('User registered successfully!');
-                // }, 5000);
+                navigate('/login')
+                toast.success('User Registration Successfully!');
+               
+                console.log('User Registration in successfully:', userCredential.user);
 
             } catch (error) {
                 toast.error(`Error registering user: ${error.message}`);

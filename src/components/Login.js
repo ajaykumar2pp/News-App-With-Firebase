@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { validationSchema } from '../components/UserSchema'
 import Form from 'react-bootstrap/Form';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +14,7 @@ const auth = getAuth(app);
 
 const Login = () => {
 
+    const navigate= useNavigate();
     const { handleChange, handleSubmit, handleBlur, touched, values, errors } = useFormik({
         initialValues: {
 
@@ -22,18 +24,14 @@ const Login = () => {
         validationSchema,
         onSubmit: async (values, action) => {
             console.log(values);
-            // console.log(values.studentName);
-            // console.log(values.date);
-            // console.log(values.gender);
-            // console.log(values.fatherName);
-            // console.log(values.motherName);
-            // console.log(values.email);
-            // console.log(values.phone);
-            // console.log(values.address);
-            // Update studentData state with form values
+            
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+               
+                localStorage.setItem("userEmail",values.email)
+                navigate('/news')
                 toast.success('User Login Successfully!');
+               
                 console.log('User logged in successfully:', userCredential.user);
 
             } catch (error) {
