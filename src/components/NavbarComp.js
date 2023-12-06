@@ -54,7 +54,7 @@ const NavbarComp = () => {
             
           </Nav>
           <Nav>
-            <NavDropdown title="Profile" id="basic-nav-dropdown">
+            <NavDropdown title="Profile" id="basic-nav-dropdown" className=' text-primary fw-semibold ps-3 pe-4 '>
               {user ? (
                 <div>
                  <NavDropdown.Item ><BsEnvelopeAtFill /> : {user.email}</NavDropdown.Item>
