@@ -71,7 +71,7 @@ const Login = () => {
                             <div className="mb-3">
                             <Form.Label>  Password</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="password"
                                     className="form-control"
                                     id="password"
                                     name="password"

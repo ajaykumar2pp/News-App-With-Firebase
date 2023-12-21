@@ -97,9 +97,9 @@ const NewsList = () => {
         ) : (
           <Row className='justify-content-between flex-wrap'>
             {(news.length > 0 ? news : offlineArticles).map((article, index) => (
-              <Col key={index} xs={12} md={4} className='mb-3'>
-                <div className='border border-primary shadow p-3 rounded'>
-                  <Image src={article.image} alt="urlImage" className="img-fluid" rounded />
+              <Col key={index} xs={12}  md={4}   className='mb-3'>
+                <div className='border border-primary shadow p-2 rounded'>
+                  <Image src={article.image} alt="urlImage" className="card-img-top p-2" rounded />
                   <div>
                     <button onClick={() => handleFavorite(article)} className='float-end mt-1 btn btn-sm-primary'><FaRegHeart /></button>
                     <span>{article.author}</span>
